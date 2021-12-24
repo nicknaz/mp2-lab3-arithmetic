@@ -66,7 +66,7 @@ public:
 
 };
 
-void isCorrect(const string &str);
+bool isCorrect(const string &str);
 vector_lexems toLexems(string &str);
 vector_lexems toPostfix(vector_lexems &lexems);
 double compute(vector_lexems &postfix);

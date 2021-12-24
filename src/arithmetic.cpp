@@ -2,7 +2,7 @@
 
 #include "../include/arithmetic.h"
 
-void isCorrect(const string &str){
+bool isCorrect(const string &str){
 	for (int i = 0; i < str.length(); i++){
 		if (strchr("0123456789.+-*/()abcdefghijklmnopqrstuvwxyz", str[i]) == nullptr)
 			throw("Incorrect symbol");
@@ -20,25 +20,36 @@ void isCorrect(const string &str){
 		if (str[i] == '('){
 			check_open = true;
 			count++;
-			if (i < str.length()-1 && strchr("+*/.", str[i + 1]) != nullptr)
-				throw("Operator after open bracket");
-			if (i > 0 && strchr("0123456789abcdefghijklmnopqrstuvwxyz", str[i-1]) != nullptr)
-				throw("Number or variable before open bracket");
+			if (i < str.length() - 1 && strchr("+*/.", str[i + 1]) != nullptr){
+				cout << ("Operator after open bracket");
+				return false;
+			}
+			if (i > 0 && strchr("0123456789abcdefghijklmnopqrstuvwxyz", str[i - 1]) != nullptr){
+				cout << ("Number or variable before open bracket");
+				return false;
+			}
 		}
 		if (str[i] == ')')
 		{
 			check_open = false;
 			count--;
-			if (i > 0 && strchr("+*/.", str[i - 1]) != nullptr)
-				throw("Operator before close bracket");
-			if (i < str.length()-1 && strchr("0123456789abcdefghijklmnopqrstuvwxyz", str[i + 1]) != nullptr)
-				throw("Number or variable after close bracket");
+			if (i > 0 && strchr("+*/.", str[i - 1]) != nullptr){
+				cout << ("Operator before close bracket");
+				return false;
+			}
+			if (i < str.length() - 1 && strchr("0123456789abcdefghijklmnopqrstuvwxyz", str[i + 1]) != nullptr){
+				cout << ("Number or variable after close bracket");
+				return false;
+			}
 		}
 	}
 
 	if (check_open && count != 0)
-		throw("Error with bracket");
-	
+	{
+		cout << ("Error with bracket");
+		return false;
+	}
+	return true;
 }
 
 vector_lexems toLexems(string &str){
@@ -186,7 +197,7 @@ double compute(vector_lexems &postfix){
 			if (postfix[i].getChar() == '*')
 				nums.push(nums.pop() * nums.pop());
 			else
-				nums.push(nums.pop() / nums.pop());
+				nums.push((1/nums.pop()) * nums.pop());
 			break;
 		default:
 			break;
