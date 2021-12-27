@@ -4,14 +4,23 @@
 
 bool isCorrect(const string &str){
 	for (int i = 0; i < str.length(); i++){
-		if (strchr("0123456789.+-*/()abcdefghijklmnopqrstuvwxyz", str[i]) == nullptr)
-			throw("Incorrect symbol");
-		if (strchr("abcdefghijklmnopqrstuvwxyz", str[i]) != nullptr && i != (str.length() - 1) && strchr("abcdefghijklmnopqrstuvwxyz", str[i + 1]) != nullptr)
-			throw("Very long name for variable, please use one symbol for name variable");
+		if (strchr("0123456789.+-*/()abcdefghijklmnopqrstuvwxyz", str[i]) == nullptr){
+			cout << ("Incorrect symbol") << endl;
+			return false;
+		}
+		if (strchr("abcdefghijklmnopqrstuvwxyz", str[i]) != nullptr && i != (str.length() - 1) && strchr("abcdefghijklmnopqrstuvwxyz", str[i + 1]) != nullptr){
+			cout << ("Very long name for variable, please use one symbol for name variable") << endl;
+			return false;
+		}
+		if (strchr("abcdefghijklmnopqrstuvwxyz", str[i]) != nullptr && i != 0 && strchr("0123456789", str[i - 1]) != nullptr){
+			cout << ("No found '*' between number and variable") << endl;
+			return false;
+		}
 	}
 
 	if (strchr("+/*).", str[0]) != nullptr || strchr("+-*/(.", str[str.length()-1]) != nullptr){
-		throw("Incorrect begin or end");
+		cout << ("Incorrect begin or end") << endl;
+		return false;
 	}
 
 	bool check_open = false;
@@ -21,11 +30,11 @@ bool isCorrect(const string &str){
 			check_open = true;
 			count++;
 			if (i < str.length() - 1 && strchr("+*/.", str[i + 1]) != nullptr){
-				cout << ("Operator after open bracket");
+				cout << ("Operator after open bracket") << endl;
 				return false;
 			}
 			if (i > 0 && strchr("0123456789abcdefghijklmnopqrstuvwxyz", str[i - 1]) != nullptr){
-				cout << ("Number or variable before open bracket");
+				cout << ("Number or variable before open bracket") << endl;
 				return false;
 			}
 		}
@@ -34,11 +43,11 @@ bool isCorrect(const string &str){
 			check_open = false;
 			count--;
 			if (i > 0 && strchr("+*/.", str[i - 1]) != nullptr){
-				cout << ("Operator before close bracket");
+				cout << ("Operator before close bracket") << endl;
 				return false;
 			}
 			if (i < str.length() - 1 && strchr("0123456789abcdefghijklmnopqrstuvwxyz", str[i + 1]) != nullptr){
-				cout << ("Number or variable after close bracket");
+				cout << ("Number or variable after close bracket") << endl;
 				return false;
 			}
 		}
@@ -46,7 +55,7 @@ bool isCorrect(const string &str){
 
 	if (check_open && count != 0)
 	{
-		cout << ("Error with bracket");
+		cout << ("Error with bracket") << endl;
 		return false;
 	}
 	return true;

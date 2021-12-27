@@ -28,18 +28,18 @@ TEST(Stack, can_string_to_lexem)
 TEST(Stack, check_error_with_brackets)
 {
 	string str = ")f+8(";
-	ASSERT_ANY_THROW(isCorrect(str));
+	ASSERT_FALSE(isCorrect(str));
 }
 
 TEST(Stack, check_error_with_operator_after_open_bracket)
 {
 	string str = "(*7+6)";
-	ASSERT_ANY_THROW(isCorrect(str));
+	ASSERT_FALSE(isCorrect(str));
 }
 TEST(Stack, check_error_with_number_after_close_bracket)
 {
 	string str = "(7+6)5";
-	ASSERT_ANY_THROW(isCorrect(str));
+	ASSERT_FALSE(isCorrect(str));
 }
 
 TEST(Stack, simple_expression)
