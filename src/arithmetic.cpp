@@ -1,6 +1,8 @@
 // реализация функций и классов для вычисления арифметических выражений
 
 #include "../include/arithmetic.h"
+#include <iostream>
+#include <string>
 
 bool isCorrect(const string &str){
 	for (int i = 0; i < str.length(); i++){
@@ -12,7 +14,7 @@ bool isCorrect(const string &str){
 			cout << ("Very long name for variable, please use one symbol for name variable") << endl;
 			return false;
 		}
-		if (strchr("abcdefghijklmnopqrstuvwxyz", str[i]) != nullptr && i != 0 && strchr("0123456789", str[i - 1]) != nullptr){
+		if (strchr("abcdefghijklmnopqrstuvwxyz", str[i]) != nullptr && (i != 0 && strchr("0123456789", str[i - 1]) != nullptr || i != (str.length() - 1) && strchr("0123456789", str[i + 1]) != nullptr)){
 			cout << ("No found '*' between number and variable") << endl;
 			return false;
 		}
@@ -132,8 +134,24 @@ vector_lexems toPostfix(vector_lexems &lexems){
 		else if (lexems[i].getType() == 1){
 			postfix.push_back(lexems[i]);
 			if (postfix.variables.count(lexems[i].getChar()) == 0){
-				cout << "Please enter value for " << lexems[i].getChar() << ": ";
-				cin >> postfix.variables[lexems[i].getChar()];
+				while (true){
+					cout << "Please enter value for " << lexems[i].getChar() << ": ";
+					string var;
+					getline(cin, var);
+					bool check = false;
+					for (int i = 0; i < var.length(); i++){
+						if (strchr("0123456789.", var[i]) == nullptr){
+							cout << "Incorrect variable! Please, try again. " << endl;
+							check = true;
+						}
+					}
+					if (check){
+						continue;
+					}
+					postfix.variables[lexems[i].getChar()] = atof(var.c_str());
+					break;
+				}
+				
 			}
 		}
 		else{
