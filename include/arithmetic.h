@@ -48,6 +48,7 @@ public:
 class vector_lexems : public vector<Lexem>{
 public:
 	map<char, double> variables;
+	bool check = true;
 
 	friend ostream& operator<<(ostream &out, const vector_lexems &v)
 	{
