@@ -66,8 +66,10 @@ bool isCorrect(const string &str){
 vector_lexems toLexems(string &str){
 	vector_lexems result_vector;
 	for (int i = 0; i < str.length(); i++){
-		if (i != 0 && strchr("0123456789", str[i - 1]) == nullptr && str[i] == '.')
-			throw("Incorrect dot");
+		if (i != 0 && strchr("0123456789", str[i - 1]) == nullptr && str[i] == '.'){
+			cout << ("Incorrect dot") << endl;
+			result_vector.check = false;
+		}
 		if (strchr("abcdefghijklmnopqrstuvwxyz", str[i]) != nullptr){
 			Lexem temp_lexem(variable, str[i]);
 			result_vector.push_back(temp_lexem);			
@@ -86,8 +88,10 @@ vector_lexems toLexems(string &str){
 				if (j == str.length())
 					break;
 			}
-			if (count_dot > 1)
-				throw("Incorrect dot");
+			if (count_dot > 1){
+				cout << ("Incorrect dot") << endl;
+				result_vector.check = false;
+			}
 			Lexem temp_lexem(number, atof(temp.c_str()));
 			result_vector.push_back(temp_lexem);
 		}else
@@ -137,6 +141,7 @@ vector_lexems toPostfix(vector_lexems &lexems){
 				while (true){
 					cout << "Please enter value for " << lexems[i].getChar() << ": ";
 					string var;
+					int dots = 0;
 					getline(cin, var);
 					bool check = false;
 					for (int i = 0; i < var.length(); i++){
@@ -144,8 +149,15 @@ vector_lexems toPostfix(vector_lexems &lexems){
 							cout << "Incorrect variable! Please, try again. " << endl;
 							check = true;
 						}
+						if ('.' == var[i]){
+							dots++;
+						}
 					}
 					if (check){
+						continue;
+					}
+					if (dots > 1){
+						cout << "Incorrect count dot in variable! Please, try again. " << endl;
 						continue;
 					}
 					postfix.variables[lexems[i].getChar()] = atof(var.c_str());
