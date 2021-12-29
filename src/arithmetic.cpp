@@ -145,12 +145,16 @@ vector_lexems toPostfix(vector_lexems &lexems){
 					getline(cin, var);
 					bool check = false;
 					for (int i = 0; i < var.length(); i++){
-						if (strchr("0123456789.", var[i]) == nullptr){
+						if (strchr("0123456789.-", var[i]) == nullptr){
 							cout << "Incorrect variable! Please, try again. " << endl;
 							check = true;
 						}
 						if ('.' == var[i]){
 							dots++;
+						}
+						if ('-' == var[i] && i!=0){
+							cout << "Incorrect variable(incorrect minus)! Please, try again. " << endl;
+							check = true;
 						}
 					}
 					if (check){
